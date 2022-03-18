@@ -3,11 +3,15 @@ import { apiManager } from "../io/api";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { Wrapper, Card, Gradient } from "./Styles";
 import "@splidejs/splide/dist/css/splide.min.css";
+import { Link } from "react-router-dom";
 
 export interface Recipe {
   id: string;
   title: string;
   image: string;
+  summary: string;
+  instructions: string;
+  extendedIngredients: Array<{ id: string; original: string }>;
 }
 
 function Popular() {
@@ -41,9 +45,11 @@ function Popular() {
         {popular.map((e: Recipe) => (
           <SplideSlide key={e.id}>
             <Card>
-              <p>{e.title}</p>
-              <img src={e.image} alt={e.title} />
-              <Gradient />
+              <Link to={"/recipe/" + e.id}>
+                <p>{e.title}</p>
+                <img src={e.image} alt={e.title} />
+                <Gradient />
+              </Link>
             </Card>
           </SplideSlide>
         ))}

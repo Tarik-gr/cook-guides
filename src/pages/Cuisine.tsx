@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { apiManager } from "../io/api";
+import { CardCuisine, Grid } from "../components/Styles";
+import { Recipe } from "../components/Popular";
 
 function Cuisine() {
-  const [cuisine, setCuisine] = useState([]);
-  console.log(cuisine);
+  const [cuisine, setCuisine] = useState<Array<Recipe>>([]);
   const { type } = useParams();
 
   const getCuisine = async (name: string) => {
@@ -14,9 +15,26 @@ function Cuisine() {
   };
   useEffect(() => {
     getCuisine(type as string);
-  }, []);
+  }, [type]);
 
-  return <div>Cuisine</div>;
+  return (
+    <Grid
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {cuisine.length &&
+        cuisine.map((el) => (
+          <CardCuisine key={el.id}>
+            <Link to={"/recipe/" + el.id}>
+              <img src={el.image} />
+            </Link>
+            <h4>{el.title}</h4>
+          </CardCuisine>
+        ))}
+    </Grid>
+  );
 }
 
 export default Cuisine;
